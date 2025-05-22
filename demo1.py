@@ -19,7 +19,7 @@ def chat_with_model(prompt):
     return response
 
 # Demo
-prompt = "Hello, how are you today?"
+prompt = "Hello, how are you today? Tell me a story"
 response = chat_with_model(prompt)
 print(f"Input: {prompt}")
 print(f"Output: {response}")
