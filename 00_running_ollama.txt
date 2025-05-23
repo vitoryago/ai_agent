@@ -1,0 +1,45 @@
+# Option 1: Using Homebrew (recommended)
+brew install ollama
+
+# Option 2: Download from website
+Go to https://ollama.com/download
+Download the macOS .dmg file
+Drag Ollama to Applications folder
+
+-----------------------------------------
+
+# Verify Installation
+ollama --version
+
+-----------------------------------------
+
+# Start Ollama
+ollama serve
+
+-----------------------------------------
+
+# Download your first model
+
+# Small and fast (good for demos)
+ollama pull phi3
+
+# Larger but more capable
+ollama pull llama3.1:8b
+
+# Very small for limited resources
+ollama pull gemma:2b
+
+-----------------------------------------
+
+# Test basic functionality
+
+ollama run phi3
+
+-----------------------------------------
+
+# Test prompts
+
+>>> Hello! Can you introduce yourself?
+>>> Write a Python function to calculate factorial
+>>> What are the key components of a transformer?
+>>> /bye
