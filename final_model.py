@@ -39,34 +39,39 @@ class ProductionRAG:
         self.ollama_model = ollama_model
         
         # Initialize components
-        self._setup_embeddings()
-        self._setup_llm()
-        self._create_knowledge_base()
-        self._setup_retrieval_chain()
+        self._setup_embeddings() # 1. Prepare text-to-vector conversion
+        self._setup_llm() # 2. Connect to language model
+        self._create_knowledge_base() # 3. Build and index your knowledge
+        self._setup_retrieval_chain() # 4. Wire everything together
         
-        print("✅ Production RAG System Ready!")
-        print(f"📚 Knowledge base: {len(self.knowledge_base)} documents")
-        print(f"🤖 Using model: {ollama_model}")
+        print("Production RAG System Ready!")
+        print(f"Knowledge base: {len(self.knowledge_base)} documents")
+        print(f"Using model: {ollama_model}")
         print("=" * 60)
     
     def _setup_embeddings(self):
-        """Setup embedding model for vector similarity search"""
-        print("📊 Loading embedding model...")
+        """
+        Setup embedding model for vector similarity search
+        
+        This loads a neural network trained specifically to convert sentencesinto
+        384-dimensional vectors that capture semantic meaning.
+        """
+        print("Loading embedding model...")
         self.embeddings = SentenceTransformerEmbeddings(
             model_name="all-MiniLM-L6-v2"
         )
     
     def _setup_llm(self):
         """Setup Ollama LLM with optimized parameters"""
-        print(f"🤖 Connecting to Ollama model: {self.ollama_model}")
+        print(f"Connecting to Ollama model: {self.ollama_model}")
         
         try:
             self.llm = Ollama(
                 model=self.ollama_model,
                 temperature=0.3,  # Lower temperature for more focused responses
-                top_p=0.9,
-                top_k=40,
-                repeat_penalty=1.1,
+                top_p=0.9, # Nucleus sampling
+                top_k=40, # Vocabulary restriction
+                repeat_penalty=1.1, # Discourages repetition
                 stop=["Human:", "Assistant:", "\n\nHuman:", "\n\nAssistant:"]
             )
             
@@ -118,11 +123,12 @@ class ProductionRAG:
         ]
         
         # Create vector store with Chroma (better than FAISS for LangChain)
+        # Each document text gets converted to 384-dimensional vector
         print("🔍 Creating vector database...")
         self.vectorstore = Chroma.from_documents(
             documents=self.knowledge_base,
             embedding=self.embeddings,
-            persist_directory="./chroma_db"  # Persist for reuse
+            persist_directory="./chroma_db"  # Everything gets saved to disk for reuse
         )
     
     def _setup_retrieval_chain(self):
@@ -173,6 +179,25 @@ Answer:"""
             
         Returns:
             Dictionary containing answer, sources, and metadata
+        
+        Ex:
+            When you call ask("What is attention?"), here's the complete flow:
+
+            1. Question Processing: "What is attention?" gets converted to an embedding vector
+            2. Similarity Search: The system compares this vector to all knowledge base vectors
+            3. Document Retrieval: Top 3 most similar documents are retrieved
+            4. Context Assembly: Retrieved documents get formatted into the prompt template
+            5. Prompt Creation: The final prompt looks like:
+
+            Context information:
+            The attention mechanism allows models to focus on relevant parts...
+            Multi-head attention allows transformers to attend to different types...
+
+            Question: What is attention?
+
+            Instructions: [numbered list]
+
+            Answer: blablabla
         """
         print(f"\n🤔 Question: {question}")
         print("-" * 50)
