@@ -78,7 +78,7 @@ Answer:"""
                     inputs,
                     max_new_tokens=100,  # Generate up to 100 new tokens
                     do_sample=True,      # Enable sampling for variety
-                    temperature=0.8,     # Moderate creativity level
+                    temperature=0.7,     # Moderate creativity level
                     top_p=0.9,          # Use nucleus sampling for better quality
                     top_k=50,           # Limit vocabulary to top 50 most likely tokens
                     pad_token_id=self.tokenizer.eos_token_id,
