@@ -31,7 +31,7 @@ class ProductionRAG:
         Initialize the RAG system with LangChain components
         
         Args:
-            ollama_model: Ollama model to use (default: llama3.1:8b)
+            ollama_model: Ollama model to use (default: llama3.1:8b)!
         """
         print("🚀 Initializing Production RAG System")
         print("=" * 60)
