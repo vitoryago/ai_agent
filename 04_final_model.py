@@ -13,6 +13,7 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
 from langchain.schema import Document
 import warnings
+import pandas as pd
 warnings.filterwarnings("ignore")
 
 class ProductionRAG:
