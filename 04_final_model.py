@@ -2,6 +2,7 @@
 Professional RAG System using LangChain + Ollama
 This demonstrates modern AI engineering practices for building reliable RAG applications.
 """
+# The final model is using LangChain + Ollama
 
 import os
 from typing import List, Dict, Any
